@@ -8,10 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Save, Plus, Trash2, Search } from 'lucide-react'
+import { ArrowLeft, Save, Plus, Trash2, Search, Calendar, DollarSign, Truck, Award, FileText, Package } from 'lucide-react'
 import Link from 'next/link'
-import { Order, OrderItem, OrderStatus } from '@/types'
+import { Order, OrderItem, OrderStatus, Season } from '@/types'
 
 const ORDER_STATUSES: { value: OrderStatus; label: string }[] = [
   { value: 'bozza', label: 'Bozza' },
@@ -32,6 +33,38 @@ interface OrderFormData {
   actualDeliveryDate: string
   notes: string
   items: OrderItem[]
+
+  // Collection & Season
+  season?: Season
+  collectionYear?: number
+  collectionName?: string
+  brandLine?: string
+  productionType?: 'sample' | 'pre-production' | 'production' | 'reorder'
+  priority?: 'urgent' | 'high' | 'normal' | 'low'
+
+  // Commercial
+  paymentMethod?: string
+  paymentTerms?: string
+  currency?: string
+  incoterms?: 'EXW' | 'FOB' | 'CIF' | 'DDP' | 'FCA'
+  discount?: number
+
+  // Logistics
+  shippingMethod?: 'sea' | 'air' | 'courier' | 'truck'
+  portOfDestination?: string
+  trackingNumber?: string
+  supplierReference?: string
+
+  // Quality
+  qualityStandard?: string
+  inspectionType?: string
+  packagingType?: string
+  labelingInstructions?: string
+  packagingNotes?: string
+
+  // Documentation
+  proformaInvoiceNumber?: string
+  purchaseOrderNumber?: string
 }
 
 export default function EditOrderPage() {
@@ -65,7 +98,39 @@ export default function EditOrderPage() {
           ? foundOrder.actualDeliveryDate.toISOString().split('T')[0]
           : '',
         notes: foundOrder.notes || '',
-        items: [...foundOrder.items]
+        items: [...foundOrder.items],
+
+        // Collection & Season
+        season: foundOrder.season,
+        collectionYear: foundOrder.collectionYear,
+        collectionName: foundOrder.collectionName || '',
+        brandLine: foundOrder.brandLine || '',
+        productionType: foundOrder.productionType,
+        priority: foundOrder.priority,
+
+        // Commercial
+        paymentMethod: foundOrder.paymentMethod || '',
+        paymentTerms: foundOrder.paymentTerms || '',
+        currency: foundOrder.currency || 'EUR',
+        incoterms: foundOrder.incoterms,
+        discount: foundOrder.discount,
+
+        // Logistics
+        shippingMethod: foundOrder.shippingMethod,
+        portOfDestination: foundOrder.portOfDestination || '',
+        trackingNumber: foundOrder.trackingNumber || '',
+        supplierReference: foundOrder.supplierReference || '',
+
+        // Quality
+        qualityStandard: foundOrder.qualityStandard || '',
+        inspectionType: foundOrder.inspectionType || '',
+        packagingType: foundOrder.packagingType || '',
+        labelingInstructions: foundOrder.labelingInstructions || '',
+        packagingNotes: foundOrder.packagingNotes || '',
+
+        // Documentation
+        proformaInvoiceNumber: foundOrder.proformaInvoiceNumber || '',
+        purchaseOrderNumber: foundOrder.purchaseOrderNumber || ''
       })
     }
   }, [orders, params.id])
@@ -131,6 +196,39 @@ export default function EditOrderPage() {
       notes: formData.notes,
       items: formData.items,
       totalAmount: calculateTotalAmount(),
+
+      // Collection & Season
+      season: formData.season,
+      collectionYear: formData.collectionYear,
+      collectionName: formData.collectionName,
+      brandLine: formData.brandLine,
+      productionType: formData.productionType,
+      priority: formData.priority,
+
+      // Commercial
+      paymentMethod: formData.paymentMethod,
+      paymentTerms: formData.paymentTerms,
+      currency: formData.currency,
+      incoterms: formData.incoterms,
+      discount: formData.discount,
+
+      // Logistics
+      shippingMethod: formData.shippingMethod,
+      portOfDestination: formData.portOfDestination,
+      trackingNumber: formData.trackingNumber,
+      supplierReference: formData.supplierReference,
+
+      // Quality
+      qualityStandard: formData.qualityStandard,
+      inspectionType: formData.inspectionType,
+      packagingType: formData.packagingType,
+      labelingInstructions: formData.labelingInstructions,
+      packagingNotes: formData.packagingNotes,
+
+      // Documentation
+      proformaInvoiceNumber: formData.proformaInvoiceNumber,
+      purchaseOrderNumber: formData.purchaseOrderNumber,
+
       updatedAt: new Date()
     }
 
