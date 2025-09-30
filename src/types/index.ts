@@ -207,8 +207,51 @@ export interface Order {
   notes?: string;
   qualityControlNotes?: string;
   productionMilestones: ProductionMilestone[];
+
+  // Collection & Season
+  season?: Season;
+  collectionYear?: number;
+  collectionName?: string;
+  brandLine?: string;
+  productionType?: 'sample' | 'pre-production' | 'production' | 'reorder';
+  priority?: 'urgent' | 'high' | 'normal' | 'low';
+
+  // Commercial Conditions
+  paymentMethod?: string;
+  paymentTerms?: string;
+  currency?: string;
+  incoterms?: 'EXW' | 'FOB' | 'CIF' | 'DDP' | 'FCA';
+  discount?: number;
+
+  // Logistics
+  shippingMethod?: 'sea' | 'air' | 'courier' | 'truck';
+  portOfDestination?: string;
+  trackingNumber?: string;
+  supplierReference?: string;
+
+  // Quality & Packaging
+  qualityStandard?: string;
+  inspectionType?: string; // AQL 2.5, 4.0, etc
+  packagingType?: string;
+  labelingInstructions?: string;
+  packagingNotes?: string;
+
+  // Documentation
+  proformaInvoiceNumber?: string;
+  purchaseOrderNumber?: string;
+  attachments?: OrderAttachment[];
+
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface OrderAttachment {
+  id: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  uploadedAt: Date;
+  uploadedBy?: string;
 }
 
 export interface OrderItem {

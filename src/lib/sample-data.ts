@@ -739,6 +739,38 @@ export const sampleOrders: Order[] = [
     orderDate: new Date('2024-08-15'),
     expectedDeliveryDate: new Date('2024-09-30'),
     notes: 'Ordine prioritario per collezione autunno',
+
+    // Collection & Season
+    season: 'autunno-inverno',
+    collectionYear: 2024,
+    collectionName: 'Formal 2024',
+    brandLine: 'Main Line',
+    productionType: 'production',
+    priority: 'high',
+
+    // Commercial Conditions
+    paymentMethod: 'Bank Transfer',
+    paymentTerms: '30% anticipo, 70% prima della spedizione',
+    currency: 'EUR',
+    incoterms: 'FOB',
+    discount: 5,
+
+    // Logistics
+    shippingMethod: 'sea',
+    portOfDestination: 'Port of Genoa',
+    supplierReference: 'REF-TM-2024-001',
+
+    // Quality & Packaging
+    qualityStandard: 'AQL 2.5',
+    inspectionType: 'Final Random Inspection',
+    packagingType: 'Individual polybags + master cartons',
+    labelingInstructions: 'Etichette brand + care label + size label',
+    packagingNotes: 'Max 12 pieces per carton',
+
+    // Documentation
+    proformaInvoiceNumber: 'PI-2024-0815',
+    purchaseOrderNumber: 'PO-2024-001',
+
     productionMilestones: [
       {
         id: generateId(),
@@ -798,6 +830,39 @@ export const sampleOrders: Order[] = [
     expectedDeliveryDate: new Date('2024-08-05'),
     actualDeliveryDate: new Date('2024-08-03'),
     notes: 'Ordine completato con anticipo',
+
+    // Collection & Season
+    season: 'cruise',
+    collectionYear: 2024,
+    collectionName: 'Accessori Luxury 2024',
+    brandLine: 'Accessories',
+    productionType: 'production',
+    priority: 'normal',
+
+    // Commercial Conditions
+    paymentMethod: 'Bank Transfer',
+    paymentTerms: '50% anticipo, 50% alla consegna',
+    currency: 'EUR',
+    incoterms: 'CIF',
+    discount: 8,
+
+    // Logistics
+    shippingMethod: 'air',
+    portOfDestination: 'Milan Malpensa Airport',
+    trackingNumber: 'TRK-AL-2024-0710',
+    supplierReference: 'REF-AL-2024-002',
+
+    // Quality & Packaging
+    qualityStandard: 'Luxury Grade A',
+    inspectionType: '100% inspection',
+    packagingType: 'Individual dust bags + branded boxes',
+    labelingInstructions: 'Brand tag + authenticity card',
+    packagingNotes: 'Premium packaging con certificati',
+
+    // Documentation
+    proformaInvoiceNumber: 'PI-2024-0710',
+    purchaseOrderNumber: 'PO-2024-002',
+
     productionMilestones: [
       {
         id: generateId(),

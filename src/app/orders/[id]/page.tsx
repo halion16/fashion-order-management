@@ -6,8 +6,10 @@ import { useAppStore } from '@/store'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
 import { formatCurrency, formatDate, formatDateTime, getOrderStatusColor } from '@/lib/utils'
-import { ArrowLeft, Edit, Trash2, Package, CheckCircle, Clock, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Edit, Trash2, Package, CheckCircle, Clock, AlertTriangle, Calendar, DollarSign, Truck, Award, FileText, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { OrderStatus, MilestoneStatus } from '@/types'
 
@@ -127,16 +129,50 @@ export default function OrderDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Order Info and Items */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Basic Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Informazioni Ordine</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Tabs defaultValue="general" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-8">
+          <TabsTrigger value="general" className="flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            <span className="hidden sm:inline">Generali</span>
+          </TabsTrigger>
+          <TabsTrigger value="collection" className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            <span className="hidden sm:inline">Collezione</span>
+          </TabsTrigger>
+          <TabsTrigger value="products" className="flex items-center gap-2">
+            <Package className="h-4 w-4" />
+            <span className="hidden sm:inline">Prodotti</span>
+          </TabsTrigger>
+          <TabsTrigger value="commercial" className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4" />
+            <span className="hidden sm:inline">Commerciale</span>
+          </TabsTrigger>
+          <TabsTrigger value="logistics" className="flex items-center gap-2">
+            <Truck className="h-4 w-4" />
+            <span className="hidden sm:inline">Logistica</span>
+          </TabsTrigger>
+          <TabsTrigger value="quality" className="flex items-center gap-2">
+            <Award className="h-4 w-4" />
+            <span className="hidden sm:inline">Qualità</span>
+          </TabsTrigger>
+          <TabsTrigger value="documents" className="flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            <span className="hidden sm:inline">Documenti</span>
+          </TabsTrigger>
+          <TabsTrigger value="timeline" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            <span className="hidden sm:inline">Timeline</span>
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Tab 1: Info Generali */}
+        <TabsContent value="general" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Informazioni Ordine</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div>
                   <h4 className="font-medium text-gray-900">Fornitore</h4>
                   <p className="text-gray-600">{supplier?.name || 'Fornitore sconosciuto'}</p>
@@ -175,28 +211,102 @@ export default function OrderDetailPage() {
                 )}
                 <div>
                   <h4 className="font-medium text-gray-900">Importo Totale</h4>
-                  <p className="text-xl font-bold text-gray-900">{formatCurrency(order.totalAmount)}</p>
+                  <p className="text-2xl font-bold text-gray-900">{formatCurrency(order.totalAmount)}</p>
+                </div>
+                {order.notes && (
+                  <div className="pt-4 border-t">
+                    <h4 className="font-medium text-gray-900">Note</h4>
+                    <p className="text-gray-600">{order.notes}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Statistiche</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Prodotti:</span>
+                  <span className="font-medium">{order.items.length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Quantità totale:</span>
+                  <span className="font-medium">
+                    {order.items.reduce((sum, item) => sum + item.quantity, 0)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Creato:</span>
+                  <span className="font-medium">{formatDate(order.createdAt)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Aggiornato:</span>
+                  <span className="font-medium">{formatDate(order.updatedAt)}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Tab 2: Collezione & Stagione */}
+        <TabsContent value="collection" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Dettagli Collezione</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900">Stagione</h4>
+                  <p className="text-gray-600">{order.season || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Anno Collezione</h4>
+                  <p className="text-gray-600">{order.collectionYear || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Nome Collezione</h4>
+                  <p className="text-gray-600">{order.collectionName || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Linea/Brand</h4>
+                  <p className="text-gray-600">{order.brandLine || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Tipo Produzione</h4>
+                  <Badge variant={order.productionType === 'sample' ? 'secondary' : 'default'}>
+                    {order.productionType || '-'}
+                  </Badge>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Priorità</h4>
+                  <Badge className={
+                    order.priority === 'urgent' ? 'bg-red-100 text-red-800' :
+                    order.priority === 'high' ? 'bg-orange-100 text-orange-800' :
+                    order.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
+                    'bg-gray-100 text-gray-800'
+                  }>
+                    {order.priority || 'normal'}
+                  </Badge>
                 </div>
               </div>
-              {order.notes && (
-                <div className="mt-4 pt-4 border-t">
-                  <h4 className="font-medium text-gray-900">Note</h4>
-                  <p className="text-gray-600">{order.notes}</p>
-                </div>
-              )}
             </CardContent>
           </Card>
+        </TabsContent>
 
-          {/* Order Items */}
-          <Card className="flex flex-col" style={{ height: 'calc(100vh - 520px)', minHeight: '400px' }}>
+        {/* Tab 3: Prodotti */}
+        <TabsContent value="products" className="space-y-6">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Package className="h-5 w-5 mr-2" />
                 Prodotti Ordinati ({order.items.length})
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden">
-              <div className="h-full overflow-y-auto space-y-2">
+            <CardContent>
+              <div className="max-h-[600px] overflow-y-auto space-y-2">
                 {order.items.map((item) => {
                   const product = products.find(p => p.id === item.productId)
                   const variant = product?.variants.find(v => v.id === item.variantId)
@@ -243,17 +353,152 @@ export default function OrderDetailPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </TabsContent>
 
-        {/* Right Column: Timeline and Stats */}
-        <div className="flex flex-col gap-6">
-          {/* Production Timeline */}
-          <Card className="flex flex-col flex-1">
+        {/* Tab 4: Condizioni Commerciali */}
+        <TabsContent value="commercial" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Condizioni Commerciali</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900">Metodo di Pagamento</h4>
+                  <p className="text-gray-600">{order.paymentMethod || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Termini di Pagamento</h4>
+                  <p className="text-gray-600">{order.paymentTerms || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Valuta</h4>
+                  <p className="text-gray-600">{order.currency || 'EUR'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Incoterms</h4>
+                  <Badge>{order.incoterms || '-'}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Sconto Applicato</h4>
+                  <p className="text-gray-600">{order.discount ? `${order.discount}%` : '-'}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 5: Logistica */}
+        <TabsContent value="logistics" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Informazioni Logistiche</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900">Metodo di Spedizione</h4>
+                  <Badge>{order.shippingMethod || '-'}</Badge>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Porto di Destinazione</h4>
+                  <p className="text-gray-600">{order.portOfDestination || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Tracking Number</h4>
+                  <p className="text-gray-600">{order.trackingNumber || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Riferimento Fornitore</h4>
+                  <p className="text-gray-600">{order.supplierReference || '-'}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 6: Qualità & Packaging */}
+        <TabsContent value="quality" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Controllo Qualità e Packaging</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900">Standard Qualità</h4>
+                  <p className="text-gray-600">{order.qualityStandard || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Tipo di Ispezione</h4>
+                  <p className="text-gray-600">{order.inspectionType || '-'}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-medium text-gray-900">Tipo di Packaging</h4>
+                  <p className="text-gray-600">{order.packagingType || '-'}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-medium text-gray-900">Istruzioni Etichettatura</h4>
+                  <p className="text-gray-600">{order.labelingInstructions || '-'}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-medium text-gray-900">Note Packaging</h4>
+                  <p className="text-gray-600">{order.packagingNotes || '-'}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 7: Documentazione */}
+        <TabsContent value="documents" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Documentazione Ordine</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900">Numero Proforma Invoice</h4>
+                  <p className="text-gray-600">{order.proformaInvoiceNumber || '-'}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">Numero Purchase Order</h4>
+                  <p className="text-gray-600">{order.purchaseOrderNumber || '-'}</p>
+                </div>
+                {order.attachments && order.attachments.length > 0 && (
+                  <div className="md:col-span-2">
+                    <h4 className="font-medium text-gray-900 mb-2">Allegati</h4>
+                    <div className="space-y-2">
+                      {order.attachments.map((attachment) => (
+                        <div key={attachment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <p className="font-medium">{attachment.fileName}</p>
+                            <p className="text-sm text-gray-500">
+                              {formatDate(attachment.uploadedAt)} {attachment.uploadedBy && `• ${attachment.uploadedBy}`}
+                            </p>
+                          </div>
+                          <Button size="sm" variant="outline">
+                            Download
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 8: Timeline Produzione */}
+        <TabsContent value="timeline" className="space-y-6">
+          <Card>
             <CardHeader>
               <CardTitle>Timeline Produzione</CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden">
-              <div className="h-full overflow-y-auto space-y-4">
+            <CardContent>
+              <div className="space-y-4">
                 {order.productionMilestones.map((milestone, index) => (
                   <div
                     key={milestone.id}
@@ -289,35 +534,8 @@ export default function OrderDetailPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Quick Stats */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Statistiche</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Prodotti:</span>
-                <span className="font-medium">{order.items.length}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Quantità totale:</span>
-                <span className="font-medium">
-                  {order.items.reduce((sum, item) => sum + item.quantity, 0)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Creato:</span>
-                <span className="font-medium">{formatDate(order.createdAt)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Aggiornato:</span>
-                <span className="font-medium">{formatDate(order.updatedAt)}</span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
