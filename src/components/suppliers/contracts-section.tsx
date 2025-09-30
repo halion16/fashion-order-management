@@ -61,13 +61,13 @@ export function ContractsSection({ contracts }: ContractsSectionProps) {
                         {getContractTypeLabel(contract.type)}
                       </Badge>
                       <span className="text-sm text-gray-600">
-                        {formatDate(contract.startDate)} - {formatDate(contract.endDate)}
+                        {formatDate(new Date(contract.startDate))} - {formatDate(new Date(contract.endDate))}
                       </span>
                     </div>
                     {contract.renewalDate && (
                       <div className="flex items-center text-sm text-amber-600">
                         <Calendar className="h-4 w-4 mr-1" />
-                        Rinnovo: {formatDate(contract.renewalDate)}
+                        Rinnovo: {formatDate(new Date(contract.renewalDate))}
                       </div>
                     )}
                   </div>
@@ -138,7 +138,7 @@ export function ContractsSection({ contracts }: ContractsSectionProps) {
                         {getContractTypeLabel(contract.type)}
                       </Badge>
                       <span className="text-sm text-gray-600">
-                        {formatDate(contract.startDate)} - {formatDate(contract.endDate)}
+                        {formatDate(new Date(contract.startDate))} - {formatDate(new Date(contract.endDate))}
                       </span>
                     </div>
                     <span className="text-xs text-red-600 font-medium">Scaduto</span>

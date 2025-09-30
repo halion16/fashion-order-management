@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { ArrowLeft, Save, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, Save, Plus, Trash2, Search } from 'lucide-react'
 import Link from 'next/link'
 import { Order, OrderItem, OrderStatus } from '@/types'
 
@@ -39,6 +39,7 @@ export default function EditOrderPage() {
   const router = useRouter()
   const { orders, suppliers, products, updateOrder, loadData } = useAppStore()
   const [order, setOrder] = useState<Order | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
   const [formData, setFormData] = useState<OrderFormData>({
     supplierId: '',
     status: 'bozza',
@@ -98,6 +99,15 @@ export default function EditOrderPage() {
     }))
   }
 
+  const removeOrderItem = (itemId: string) => {
+    if (confirm('Sei sicuro di voler eliminare questo prodotto dall\'ordine?')) {
+      setFormData(prev => ({
+        ...prev,
+        items: prev.items.filter(item => item.id !== itemId)
+      }))
+    }
+  }
+
   const calculateTotalAmount = () => {
     return formData.items.reduce((sum, item) => sum + item.totalPrice, 0)
   }
@@ -129,6 +139,19 @@ export default function EditOrderPage() {
   }
 
   const supplier = suppliers.find(s => s.id === formData.supplierId)
+
+  const filteredItems = formData.items.filter(item => {
+    if (!searchTerm) return true
+    const product = products.find(p => p.id === item.productId)
+    const variant = product?.variants.find(v => v.id === item.variantId)
+    const searchLower = searchTerm.toLowerCase()
+    return (
+      product?.name.toLowerCase().includes(searchLower) ||
+      product?.code.toLowerCase().includes(searchLower) ||
+      variant?.color.toLowerCase().includes(searchLower) ||
+      variant?.size.toLowerCase().includes(searchLower)
+    )
+  })
 
   return (
     <div className="space-y-6">
@@ -245,17 +268,37 @@ export default function EditOrderPage() {
         {/* Order Items */}
         <Card>
           <CardHeader>
-            <CardTitle>Prodotti Ordinati</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Prodotti Ordinati ({filteredItems.length}/{formData.items.length})</CardTitle>
+              <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Cerca prodotto..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {formData.items.map((item) => {
+            <div className="max-h-96 overflow-y-auto space-y-4 mb-4">
+              {filteredItems.map((item) => {
                 const product = products.find(p => p.id === item.productId)
                 const variant = product?.variants.find(v => v.id === item.variantId)
 
                 return (
-                  <div key={item.id} className="border rounded-lg p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+                  <div key={item.id} className="border rounded-lg p-4 relative">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeOrderItem(item.id)}
+                      className="absolute top-2 right-2 text-red-600 hover:text-red-800 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end pr-10">
                       <div className="md:col-span-2">
                         <Label>Prodotto</Label>
                         <p className="font-medium">{product?.name || 'Prodotto sconosciuto'}</p>
@@ -338,12 +381,12 @@ export default function EditOrderPage() {
                   </div>
                 )
               })}
+            </div>
 
-              <div className="border-t pt-4">
-                <div className="flex justify-end">
-                  <div className="text-xl font-semibold">
-                    Totale Ordine: {formatCurrency(calculateTotalAmount())}
-                  </div>
+            <div className="border-t pt-4 bg-white">
+              <div className="flex justify-end">
+                <div className="text-xl font-semibold">
+                  Totale Ordine: {formatCurrency(calculateTotalAmount())}
                 </div>
               </div>
             </div>

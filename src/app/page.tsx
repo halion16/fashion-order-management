@@ -8,11 +8,19 @@ import { OrdersChart } from '@/components/dashboard/orders-chart'
 import { TopSuppliers } from '@/components/dashboard/top-suppliers'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus, Download, Upload } from 'lucide-react'
+import { Plus, Download, Upload, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
+import { storage } from '@/lib/storage'
 
 export default function Dashboard() {
   const { loadData, getDashboardKPI, orders, suppliers, products } = useAppStore()
+
+  const handleResetData = () => {
+    if (confirm('Sei sicuro di voler resettare tutti i dati e ricaricare gli esempi? Questa azione non può essere annullata.')) {
+      storage.clearAll()
+      window.location.reload()
+    }
+  }
 
   useEffect(() => {
     initializeSampleData()
@@ -38,6 +46,10 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex space-x-3">
+          <Button variant="outline" size="sm" onClick={handleResetData}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Reset Dati
+          </Button>
           <Button variant="outline" size="sm">
             <Download className="h-4 w-4 mr-2" />
             Esporta Dati

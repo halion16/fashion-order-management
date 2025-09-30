@@ -366,3 +366,21 @@ export interface DashboardKPI {
     count: number;
   }>;
 }
+
+export interface ProductFormData {
+  name: string;
+  code: string;
+  category: ProductCategory;
+  subcategory: string;
+  description: string;
+  season: Season;
+  collection: string;
+  collectionYear: number;
+  materials: MaterialSpec[];
+  careInstructions: CareInstruction[];
+  targetPrice: number;
+  sustainability: SustainabilityInfo;
+  measurements: ProductMeasurements;
+  tags: string[];
+  status: ProductStatus;
+}

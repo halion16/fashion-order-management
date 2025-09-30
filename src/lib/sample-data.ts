@@ -571,9 +571,171 @@ export const sampleOrders: Order[] = [
         unitPrice: 120.00,
         totalPrice: 3600.00,
         qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[2].id,
+        quantity: 25,
+        unitPrice: 120.00,
+        totalPrice: 3000.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[0].id,
+        quantity: 75,
+        unitPrice: 35.00,
+        totalPrice: 2625.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[1].id,
+        quantity: 60,
+        unitPrice: 35.00,
+        totalPrice: 2100.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[0].id,
+        quantity: 100,
+        unitPrice: 8.50,
+        totalPrice: 850.00,
+        qualityGrade: 'B'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[1].id,
+        quantity: 100,
+        unitPrice: 8.50,
+        totalPrice: 850.00,
+        qualityGrade: 'B'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[2].id,
+        quantity: 80,
+        unitPrice: 8.50,
+        totalPrice: 680.00,
+        qualityGrade: 'B'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[0].id,
+        quantity: 40,
+        unitPrice: 120.00,
+        totalPrice: 4800.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[1].id,
+        quantity: 35,
+        unitPrice: 120.00,
+        totalPrice: 4200.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[2].id,
+        quantity: 30,
+        unitPrice: 120.00,
+        totalPrice: 3600.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[0].id,
+        quantity: 50,
+        unitPrice: 35.00,
+        totalPrice: 1750.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[1].id,
+        quantity: 45,
+        unitPrice: 35.00,
+        totalPrice: 1575.00,
+        qualityGrade: 'B'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[0].id,
+        quantity: 120,
+        unitPrice: 8.50,
+        totalPrice: 1020.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[1].id,
+        quantity: 110,
+        unitPrice: 8.50,
+        totalPrice: 935.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[2].id,
+        variantId: sampleProducts[2].variants[2].id,
+        quantity: 90,
+        unitPrice: 8.50,
+        totalPrice: 765.00,
+        qualityGrade: 'B'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[0].id,
+        quantity: 20,
+        unitPrice: 120.00,
+        totalPrice: 2400.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[0].id,
+        variantId: sampleProducts[0].variants[1].id,
+        quantity: 18,
+        unitPrice: 120.00,
+        totalPrice: 2160.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[0].id,
+        quantity: 40,
+        unitPrice: 35.00,
+        totalPrice: 1400.00,
+        qualityGrade: 'A'
+      },
+      {
+        id: generateId(),
+        productId: sampleProducts[1].id,
+        variantId: sampleProducts[1].variants[1].id,
+        quantity: 35,
+        unitPrice: 35.00,
+        totalPrice: 1225.00,
+        qualityGrade: 'A'
       }
     ],
-    totalAmount: 9600.00,
+    totalAmount: 48585.00,
     orderDate: new Date('2024-08-15'),
     expectedDeliveryDate: new Date('2024-09-30'),
     notes: 'Ordine prioritario per collezione autunno',

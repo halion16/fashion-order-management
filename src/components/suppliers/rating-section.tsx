@@ -147,7 +147,7 @@ export function RatingSection({ ratingHistory, overallRating }: RatingSectionPro
                     </span>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-600">{formatDate(rating.ratingDate)}</p>
+                    <p className="text-sm text-gray-600">{formatDate(new Date(rating.ratingDate))}</p>
                     <div className="flex items-center text-xs text-gray-500 mt-1">
                       <User className="h-3 w-3 mr-1" />
                       {rating.ratedBy}

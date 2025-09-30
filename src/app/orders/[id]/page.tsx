@@ -128,7 +128,7 @@ export default function OrderDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Order Info */}
+        {/* Order Info and Items */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Info */}
           <Card>
@@ -188,54 +188,54 @@ export default function OrderDetailPage() {
           </Card>
 
           {/* Order Items */}
-          <Card>
+          <Card className="flex flex-col" style={{ height: 'calc(100vh - 520px)', minHeight: '400px' }}>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Package className="h-5 w-5 mr-2" />
-                Prodotti Ordinati
+                Prodotti Ordinati ({order.items.length})
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto space-y-2">
                 {order.items.map((item) => {
                   const product = products.find(p => p.id === item.productId)
                   const variant = product?.variants.find(v => v.id === item.variantId)
 
                   return (
-                    <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">
-                          {product?.name || 'Prodotto sconosciuto'}
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          {product?.code} - {variant?.color} - {variant?.size}
+                    <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium text-gray-900 text-sm truncate">
+                            {product?.name || 'Prodotto sconosciuto'}
+                          </h4>
+                          {item.qualityGrade && (
+                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium ${
+                              item.qualityGrade === 'A'
+                                ? 'bg-green-100 text-green-800'
+                                : item.qualityGrade === 'B'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : item.qualityGrade === 'C'
+                                ? 'bg-orange-100 text-orange-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {item.qualityGrade}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-600 truncate">
+                          {product?.code} • {variant?.color} • {variant?.size}
                         </p>
-                        <p className="text-sm text-gray-500">
-                          Quantità: {item.quantity} × {formatCurrency(item.unitPrice)}
+                        <p className="text-xs text-gray-500">
+                          {item.quantity} × {formatCurrency(item.unitPrice)}
+                          {item.receivedQuantity !== undefined && (
+                            <span className="ml-2 text-blue-600">• Ricevuti: {item.receivedQuantity}</span>
+                          )}
                         </p>
-                        {item.qualityGrade && (
-                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2 ${
-                            item.qualityGrade === 'A'
-                              ? 'bg-green-100 text-green-800'
-                              : item.qualityGrade === 'B'
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : item.qualityGrade === 'C'
-                              ? 'bg-orange-100 text-orange-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            Qualità: {item.qualityGrade}
-                          </span>
-                        )}
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-900">
+                      <div className="text-right ml-3">
+                        <p className="font-semibold text-gray-900 text-sm">
                           {formatCurrency(item.totalPrice)}
                         </p>
-                        {item.receivedQuantity !== undefined && (
-                          <p className="text-sm text-gray-600">
-                            Ricevuti: {item.receivedQuantity}
-                          </p>
-                        )}
                       </div>
                     </div>
                   )
@@ -245,14 +245,15 @@ export default function OrderDetailPage() {
           </Card>
         </div>
 
-        {/* Production Timeline */}
-        <div className="space-y-6">
-          <Card>
+        {/* Right Column: Timeline and Stats */}
+        <div className="flex flex-col gap-6">
+          {/* Production Timeline */}
+          <Card className="flex flex-col flex-1">
             <CardHeader>
               <CardTitle>Timeline Produzione</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto space-y-4">
                 {order.productionMilestones.map((milestone, index) => (
                   <div
                     key={milestone.id}
